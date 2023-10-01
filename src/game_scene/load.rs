@@ -60,6 +60,7 @@ pub fn load_init(galaxy: &Galaxy) {
             include_bytes!("../../assets/success.mp3"),
             include_bytes!("../../assets/punch.mp3"),
             include_bytes!("../../assets/coin.mp3"),
+            include_bytes!("../../assets/no.mp3"),
         ]),
     );
 }
@@ -90,4 +91,11 @@ pub fn audio_coin(galaxy: &Galaxy) {
         .get_mut_resource::<Audio, _>(Audio::single_resource())
         .unwrap()
         .play(3);
+}
+
+pub fn audio_no(galaxy: &Galaxy) {
+    galaxy
+        .get_mut_resource::<Audio, _>(Audio::single_resource())
+        .unwrap()
+        .play(4);
 }

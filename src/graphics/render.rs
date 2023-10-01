@@ -139,7 +139,16 @@ impl Renderer {
                                 ty: ShaderUniformType::Texture(texture_id),
                             },
                         ],
-                        None,
+                        Some(NewProgramExt {
+                            enable_blend: Some(()),
+                            blend_color_operation: Some(ShaderBlendOperation::Add),
+                            blend_color_src_factor: Some(ShaderBlendFactor::SrcAlpha),
+                            blend_color_dst_factor: Some(ShaderBlendFactor::OneMinusSrcAlpha),
+                            blend_alpha_operation: Some(ShaderBlendOperation::Add),
+                            blend_alpha_src_factor: Some(ShaderBlendFactor::SrcAlpha),
+                            blend_alpha_dst_factor: Some(ShaderBlendFactor::OneMinusSrcAlpha),
+                            ..Default::default()
+                        }),
                     )
                     .unwrap()
             })
@@ -265,13 +274,7 @@ pub fn graphics_init(galaxy: &Galaxy) {
         .get_resource::<RendererInitLoadTextures, _>(RendererInitLoadTextures::single_resource())
         .unwrap();
 
-    let renderer = Renderer::new(
-        raw_window.display,
-        raw_window.window,
-        1280,
-        960,
-        &textures.0,
-    );
+    let renderer = Renderer::new(raw_window.display, raw_window.window, 800, 600, &textures.0);
 
     galaxy.insert_resource(RendererRes::single_resource(), RendererRes(renderer));
     galaxy.insert_resource(RendererCamera::single_resource(), RendererCamera::default());

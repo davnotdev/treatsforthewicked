@@ -1,8 +1,8 @@
 use super::*;
 
-const ABSOLUTE_STEAL_MAX: usize = 8;
-const ANGER_DURATION: Duration = Duration::from_secs(5);
-const ANGER_CHANCE: f64 = 0.3;
+const ABSOLUTE_STEAL_MAX: usize = 15;
+const ANGER_DURATION: Duration = Duration::from_secs(3);
+const ANGER_CHANCE: f64 = 0.2;
 
 #[derive(SingleResource, Default, Clone, Copy)]
 struct Candyland {
@@ -20,7 +20,7 @@ impl Candyland {
             trigger_anger = true;
         }
 
-        if trigger_anger && self.candy_stolen > 2 {
+        if trigger_anger && self.candy_stolen > 4 {
             audio_door(galaxy);
             self.time_of_anger = Some(Instant::now());
         }
@@ -84,7 +84,9 @@ pub fn candyland_update(galaxy: &Galaxy) {
 
     for ev in galaxy.get_events::<WindowEvent>() {
         if let WindowEventData::KeyboardInput { input, .. } = ev.0 {
-            if input.virtual_keycode == Some(VirtualKeyCode::Escape) {
+            if input.virtual_keycode == Some(VirtualKeyCode::Escape)
+                && candyland.time_of_anger.is_none()
+            {
                 **galaxy
                     .get_mut_resource::<GameState, _>(GameState::single_resource())
                     .unwrap() = GameState::Map;
@@ -117,7 +119,7 @@ pub fn candyland_update(galaxy: &Galaxy) {
             **galaxy
                 .get_mut_resource::<GameState, _>(GameState::single_resource())
                 .unwrap() = GameState::Map;
-            player.score = (player.score as isize - 8).clamp(0, 9999) as usize;
+            player.score = (player.score as isize - 6).clamp(0, 9999) as usize;
             audio_punch(galaxy);
             spawn_score_decrement(galaxy);
             candyland.reset();

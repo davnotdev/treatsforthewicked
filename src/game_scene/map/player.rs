@@ -29,7 +29,7 @@ impl Player {
                 PlayerState::Punching(_) => SPRITE_KIDPUNCH,
             },
             position: self.position,
-            scale: glm::vec2(0.3, 0.3),
+            scale: glm::vec2(0.35, 0.35),
             color: glm::vec3(1.0, 1.0, 1.0),
             ..Default::default()
         }

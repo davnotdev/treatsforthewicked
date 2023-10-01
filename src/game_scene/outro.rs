@@ -1,6 +1,10 @@
 use super::*;
 
 pub fn outro_update(galaxy: &Galaxy) {
+    galaxy
+        .get_mut_resource::<RendererCamera, _>(RendererCamera::single_resource())
+        .unwrap()
+        .position = glm::vec2(0.0, 0.0);
     galaxy.insert_event(RendererDrawSprite(Sprite {
         visible: 1.0,
         texture_index: SPRITE_OUTRO,

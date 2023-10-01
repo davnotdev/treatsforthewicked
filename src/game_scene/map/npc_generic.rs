@@ -1,10 +1,10 @@
 use super::*;
 
-const SPAWN_COUNT: usize = 6;
+const SPAWN_COUNT: usize = 12;
 const WALK_SPEED: f32 = 0.01;
-const BEATING_COOLDOWN: Duration = Duration::from_secs(10);
+const BEATING_COOLDOWN: Duration = Duration::from_secs(12);
 const HOUSE_IDLE_TIME: Duration = Duration::from_secs(2);
-const PLAYER_PUNCH_RANGE: f32 = 0.4;
+const PLAYER_PUNCH_RANGE: f32 = 0.6;
 const CRYING_SLIDE_SPEED: f32 = 0.001;
 const CRYING_TIME: Duration = Duration::from_secs(5);
 
@@ -33,7 +33,7 @@ impl NpcGeneric {
                 _ => self.sprite_texture,
             },
             position: self.position,
-            scale: glm::vec2(0.3, 0.3),
+            scale: glm::vec2(0.35, 0.35),
             color: glm::vec3(1.0, 1.0, 1.0),
             ..Default::default()
         }

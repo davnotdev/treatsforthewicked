@@ -1,10 +1,12 @@
 use super::*;
 
-const INTERACT_DISTANCE: f32 = 0.3;
+const INTERACT_DISTANCE: f32 = 0.5;
+const HOUSE_COOLDOWN: Duration = Duration::from_secs(30);
 
 #[derive(CheapComponent, Clone, Copy)]
 pub struct House {
     pub position: glm::Vec2,
+    last_entered: Option<Instant>,
 }
 
 impl House {
@@ -25,6 +27,7 @@ pub fn house_init(galaxy: &Galaxy) {
         for x in -4..4 {
             galaxy.insert_entity().insert(House {
                 position: glm::vec2(x as f32 * 1.4, y as f32 * 1.7 + 1.0),
+                last_entered: None,
             });
         }
     }
@@ -48,10 +51,17 @@ pub fn house_interact_update(galaxy: &Galaxy) {
                     .get_resource::<Player, _>(Player::single_resource())
                     .unwrap();
 
-                if galaxy.query::<&House>().iter().any(|house| {
-                    glm::distance(&player.position, &house.position) < INTERACT_DISTANCE
-                }) {
-                    next_state = true;
+                for house in galaxy.query::<&mut House>().iter() {
+                    if glm::distance(&player.position, &house.position) < INTERACT_DISTANCE {
+                        if let Some(last_entered) = house.last_entered {
+                            if Instant::now().duration_since(last_entered) < HOUSE_COOLDOWN {
+                                audio_no(galaxy);
+                                continue;
+                            }
+                        }
+                        next_state = true;
+                        house.last_entered = Some(Instant::now());
+                    }
                 }
             }
         }

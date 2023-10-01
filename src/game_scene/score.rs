@@ -74,7 +74,7 @@ pub fn score_render_update(galaxy: &Galaxy) {
         position: glm::vec2(TOP_X + (last_i + 1) as f32 * OFFSET, TOP_Y) + delta,
     }));
 
-    if player.score >= WIN_SCORE {
+    if player.score >= WIN_SCORE && *state == GameState::Map {
         drop(state);
         **galaxy
             .get_mut_resource::<GameState, _>(GameState::single_resource())
