@@ -1,0 +1,18 @@
+<div id="nosupport"></div>
+<script type="module">
+    function nosupport() {
+        document.getElementById("nosupport").innerText =
+            "This game needs WebGpu support to run!";
+        alert("This game needs WebGpu support to run!");
+    }
+
+    try {
+        let adapter = await navigator.gpu.requestAdapter();
+        let device = await adapter.requestDevice();
+
+        window.mepeyewDevice = device;
+        window.mepeyewAdapter = adapter;
+    } catch (e) {
+        nosupport();
+    }
+</script>
